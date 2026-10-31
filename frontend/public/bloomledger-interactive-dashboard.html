@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloomLedger & BloomBox POS Dashboard | She Clipative</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js for Weekly Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        bloom: {
+                            purple: '#6d28d9',
+                            lightPurple: '#f3e8ff',
+                            darkPurple: '#4c1d95',
+                            pink: '#ec4899',
+                            emerald: '#10b981',
+                            amber: '#f59e0b',
+                            dark: '#0f172a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom styles for LCD display simulation */
+        .lcd-display {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #92b036;
+            color: #121c03;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.2);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        .pulse-live {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- TOP HEADER -->
+    <header class="bg-gradient-to-r from-bloom-darkPurple via-bloom-purple to-purple-800 text-white shadow-lg border-b border-purple-900 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-bloom-pink/20 border border-bloom-pink/40 flex items-center justify-center text-bloom-pink font-bold text-xl">
+                    🌸
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight">BloomLedger <span class="text-bloom-pink font-medium text-sm">| BloomBox POS</span></h1>
+                    <p class="text-xs text-purple-200">Financial Inclusion & Asset Financing Platform</p>
+                </div>
+            </div>
+
+            <!-- Team Badge & Live Status -->
+            <div class="flex items-center gap-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-live"></span>
+                    Hardware Simulation Only
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">
+                    Team She Clipative
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <div style="background:#fef3c7;color:#78350f;padding:10px 20px;text-align:center;font:600 12px sans-serif">DEMO ONLY — Hardware, trust scores, vouchers, AI insights and sample sales are simulated. No lender, database or Arduino is connected.</div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow space-y-8">
+
+        <!-- BANNER SUMMARY -->
+        <div class="bg-gradient-to-r from-purple-900 via-indigo-900 to-slate-900 rounded-2xl p-6 md:p-8 text-white shadow-xl relative overflow-hidden">
+            <div class="absolute right-0 top-0 translate-x-12 -translate-y-8 w-64 h-64 bg-bloom-pink/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 max-w-3xl">
+                <span class="inline-block px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-bloom-pink text-white mb-3">SheCode Hackathon 2026</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold mb-2">Empowering Informal Women Merchants with Verifiable Credit History</h2>
+                <p class="text-slate-300 text-sm md:text-base leading-relaxed">
+                    Concept: connecting offline township stall transactions to alternative financial scoring. From a 1-click <strong class="text-white">R250 hardware terminal</strong> to potential wholesale stock vouchers.
+                </p>
+            </div>
+        </div>
+
+        <!-- TWO COLUMN GRID: HARDWARE SIMULATOR & TIER SELECTOR -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- LEFT COLUMN: HARDWARE POS TERMINAL SIMULATOR (5 COLS) -->
+            <div class="lg:col-span-5 flex flex-col space-y-6">
+                <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-2xl border border-slate-800 flex flex-col justify-between h-full">
+                    <div>
+                        <!-- Device Header -->
+                        <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-800">
+                            <div class="flex items-center space-x-2">
+                                <i class="fa-solid fa-microchip text-bloom-pink"></i>
+                                <span class="font-bold text-sm tracking-wide text-slate-200">BloomBox Hardware Terminal</span>
+                            </div>
+                            <span class="text-xs bg-purple-950 text-purple-300 px-2.5 py-0.5 rounded border border-purple-800">Arduino Uno / ESP32</span>
+                        </div>
+
+                        <!-- 16x2 LCD SCREEN SIMULATION -->
+                        <div class="mb-6">
+                            <div class="text-xs text-slate-400 mb-1 flex justify-between">
+                                <span>16x2 I²C LCD Display</span>
+                                <span id="hardware-status" class="text-emerald-400 font-medium">Ready</span>
+                            </div>
+                            <div class="lcd-display p-4 rounded-xl border-4 border-slate-700 tracking-wider">
+                                <div id="lcd-line1" class="font-bold text-lg truncate">Maize Meal (R85)</div>
+                                <div id="lcd-line2" class="font-bold text-base mt-1 flex justify-between">
+                                    <span>Qty: <span id="lcd-qty">1</span></span>
+                                    <span>Total: R<span id="lcd-total">85.00</span></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- HARDWARE KEYPAD BUTTONS -->
+                        <div class="space-y-3">
+                            <label class="text-xs font-semibold uppercase text-slate-400 tracking-wider">Physical Terminal Keypad</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="hardwareNextProduct()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-3 rounded-xl border border-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow">
+                                    <i class="fa-solid fa-forward text-blue-400"></i> Next Item (D2)
+                                </button>
+                                <button onclick="hardwareChangeQty()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-3 rounded-xl border border-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition active:scale-95 shadow">
+                                    <i class="fa-solid fa-plus text-amber-400"></i> Change Qty (D3)
+                                </button>
+                                <button onclick="hardwareRecordSale()" class="col-span-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white p-3.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition active:scale-95 shadow-lg shadow-emerald-900/40">
+                                    <i class="fa-solid fa-check-circle"></i> RECORD SALE (D4)
+                                </button>
+                                <button onclick="hardwareCancel()" class="col-span-2 bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-300 p-2.5 rounded-xl border border-slate-700 text-xs font-semibold flex items-center justify-center gap-2 transition active:scale-95">
+                                    <i class="fa-solid fa-xmark"></i> Cancel / Clear (D5)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hardware Status Footer -->
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 flex justify-between items-center">
+                        <span>Device Cost: <strong class="text-emerald-400">R250 (Concept estimate)</strong></span>
+                        <span>Serial Port: <strong class="text-slate-200">Not connected</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: PRICING TIERS & LIVE CALCULATOR (7 COLS) -->
+            <div class="lg:col-span-7 flex flex-col space-y-6">
+                <!-- PRICING & SUBSCRIPTION SELECTOR -->
+                <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 mb-4">
+                        <div>
+                            <h3 class="font-extrabold text-slate-900 text-lg">Subscription Tier & Device Plan</h3>
+                            <p class="text-xs text-slate-500">Initial Hardware Cost: <strong class="text-bloom-purple">R250 (1-Time Device Payment)</strong></p>
+                        </div>
+                        <span class="text-xs bg-purple-100 text-bloom-purple font-bold px-3 py-1 rounded-full self-start sm:self-auto">
+                            Flexible Monthly Tiers
+                        </span>
+                    </div>
+
+                    <!-- TIER SWITCHER BUTTONS -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <!-- Standard Tier -->
+                        <div id="card-tier-standard" onclick="selectTier('standard')" class="cursor-pointer border-2 border-slate-200 rounded-xl p-4 transition-all hover:border-bloom-purple bg-white flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-sm text-slate-800">Standard</span>
+                                    <i class="fa-solid fa-circle-check text-slate-300 text-sm tier-icon"></i>
+                                </div>
+                                <div class="text-2xl font-extrabold text-slate-900 mb-2">R25 <span class="text-xs text-slate-500 font-normal">/mo</span></div>
+                                <p class="text-xs text-slate-500 leading-snug">Basic daily sales logging & ledger storage.</p>
+                            </div>
+                        </div>
+
+                        <!-- Growth Tier (Default) -->
+                        <div id="card-tier-growth" onclick="selectTier('growth')" class="cursor-pointer border-2 border-bloom-purple rounded-xl p-4 transition-all bg-purple-50/50 shadow-sm flex flex-col justify-between relative">
+                            <span class="absolute -top-2.5 right-3 bg-bloom-purple text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider">Popular</span>
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-sm text-bloom-purple">Growth</span>
+                                    <i class="fa-solid fa-circle-check text-bloom-purple text-sm tier-icon"></i>
+                                </div>
+                                <div class="text-2xl font-extrabold text-bloom-purple mb-2">R50 <span class="text-xs text-slate-500 font-normal">/mo</span></div>
+                                <p class="text-xs text-slate-600 leading-snug">Alternative trust scoring & stock vouchers.</p>
+                            </div>
+                        </div>
+
+                        <!-- Pro Tier -->
+                        <div id="card-tier-pro" onclick="selectTier('pro')" class="cursor-pointer border-2 border-slate-200 rounded-xl p-4 transition-all hover:border-bloom-purple bg-white flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-sm text-slate-800">Pro</span>
+                                    <i class="fa-solid fa-circle-check text-slate-300 text-sm tier-icon"></i>
+                                </div>
+                                <div class="text-2xl font-extrabold text-slate-900 mb-2">R100 <span class="text-xs text-slate-500 font-normal">/mo</span></div>
+                                <p class="text-xs text-slate-500 leading-snug">Proposed AI insights & group analytics.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- KEY METRICS OVERVIEW CARDS -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <!-- Weekly Income Card -->
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-400 block mb-1">📅 Sample 7-Day Income</span>
+                        <div class="text-2xl font-extrabold text-slate-900">R<span id="metric-weekly-income">1,870.00</span></div>
+                        <span class="text-[11px] text-emerald-600 font-semibold flex items-center gap-1 mt-1">
+                            <i class="fa-solid fa-arrow-trend-up"></i> +18% vs last week (sample)
+                        </span>
+                    </div>
+
+                    <!-- Trust Score Card -->
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-400 block mb-1">⭐ Simulated Trust Score & Tier</span>
+                        <div class="flex items-baseline space-x-2">
+                            <span id="metric-trust-score" class="text-2xl font-extrabold text-bloom-purple">720</span>
+                            <span id="metric-credit-tier" class="text-xs font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-700">Silver</span>
+                        </div>
+                        <span class="text-[11px] text-slate-500 font-medium block mt-1">Illustrative scoring, not a credit assessment</span>
+                    </div>
+
+                    <!-- Wholesale Stock Credit Card -->
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                        <span class="text-xs font-semibold text-slate-400 block mb-1">📦 Illustrative Stock Voucher Limit</span>
+                        <div class="text-2xl font-extrabold text-emerald-600">R<span id="metric-voucher-limit">1,500</span></div>
+                        <span id="metric-voucher-status" class="text-[11px] text-emerald-700 font-medium block mt-1">Illustrative limit · Not redeemable</span>
+                    </div>
+                </div>
+
+                <!-- AI BUSINESS GROWTH INSIGHT BOX -->
+                <div class="bg-gradient-to-r from-purple-900 to-indigo-900 text-white p-5 rounded-2xl shadow-md border border-purple-800">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-bloom-pink"></i>
+                        <h4 class="font-bold text-sm text-purple-100">Illustrative Business Growth Insight</h4>
+                    </div>
+                    <p id="insight-text" class="text-xs sm:text-sm text-purple-200 leading-relaxed">
+                        🔥 Strong sales week! In a future version, stock up using a Silver Stock Voucher to support business growth.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LOWER SECTION: ANALYTICAL CHART & TRANSACTION HISTORY -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- WEEKLY INCOME CHART (7 COLS) -->
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <div>
+                        <h3 class="font-extrabold text-slate-900 text-base">Weekly Trade Progression</h3>
+                        <p class="text-xs text-slate-500">Illustrative 7-day sample sales + current simulated transactions</p>
+                    </div>
+                    <span class="text-xs bg-slate-100 text-slate-600 font-semibold px-2.5 py-1 rounded-md">
+                        Oct 25 - Oct 31, 2026
+                    </span>
+                </div>
+                <div class="h-64">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+
+            <!-- LIVE TRANSACTION LOG (5 COLS) -->
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-extrabold text-slate-900 text-base">Recent BloomBox Logs</h3>
+                        <span class="text-xs text-emerald-600 font-semibold flex items-center gap-1">
+                            <i class="fa-solid fa-circle text-[8px] pulse-live"></i> Demo Log
+                        </span>
+                    </div>
+
+                    <div id="transaction-list" class="space-y-3 max-h-56 overflow-y-auto pr-1">
+                        <!-- Initial Mock Items -->
+                        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-xs">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold">🛒</div>
+                                <div>
+                                    <div class="font-bold text-slate-800">Maize Meal (x2)</div>
+                                    <div class="text-[10px] text-slate-400">Today, 10:42 AM</div>
+                                </div>
+                            </div>
+                            <span class="font-extrabold text-slate-900">+R170.00</span>
+                        </div>
+
+                        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-xs">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold">🛒</div>
+                                <div>
+                                    <div class="font-bold text-slate-800">Cooking Oil (x1)</div>
+                                    <div class="text-[10px] text-slate-400">Today, 09:15 AM</div>
+                                </div>
+                            </div>
+                            <span class="font-extrabold text-slate-900">+R35.00</span>
+                        </div>
+
+                        <div class="flex justify-between items-center p-2.5 bg-slate-50 rounded-xl border border-slate-100 text-xs">
+                            <div class="flex items-center space-x-2.5">
+                                <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">💰</div>
+                                <div>
+                                    <div class="font-bold text-slate-800">Stokvel Monthly Deposit</div>
+                                    <div class="text-[10px] text-slate-400">Yesterday, 04:30 PM</div>
+                                </div>
+                            </div>
+                            <span class="font-extrabold text-emerald-600">+R600.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-t border-slate-100 text-center">
+                    <span class="text-[11px] text-slate-400">Browser-only prototype · No database sync</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-500">
+            <div>
+                <strong>BloomLedger</strong> &copy; 2026 Developed by <strong class="text-bloom-purple">Team She Clipative</strong>
+            </div>
+            <div>
+                SheCode Hackathon 2026 | Economic Empowerment & Financial Inclusion
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE DASHBOARD JAVASCRIPT LOGIC -->
+    <script>
+        // Sample Products Catalog for Hardware Simulator
+        const productsCatalog = [
+            { name: "Maize Meal", price: 85.00 },
+            { name: "Cooking Oil", price: 35.00 },
+            { name: "Fresh Apples", price: 5.00 },
+            { name: "Bread & Milk", price: 18.00 }
+        ];
+
+        let currentProductIndex = 0;
+        let currentQuantity = 1;
+        let selectedTier = 'growth';
+
+        // Base Financial State
+        let weeklyIncome = 1870.00;
+        let trustScore = 720;
+        let rawDailySales = [180, 240, 310, 290, 410, 240, 200];
+
+        // Chart.js Instance Variable
+        let weeklyChart;
+
+        // Initialize Page
+        window.addEventListener('DOMContentLoaded', () => {
+            initChart();
+            updateDisplayLCD();
+            recalculateMetrics();
+        });
+
+        // 1. HARDWARE SIMULATOR FUNCTIONS
+        function updateDisplayLCD() {
+            const prod = productsCatalog[currentProductIndex];
+            const total = (prod.price * currentQuantity).toFixed(2);
+            document.getElementById('lcd-line1').innerText = `${prod.name} (R${prod.price.toFixed(0)})`;
+            document.getElementById('lcd-qty').innerText = currentQuantity;
+            document.getElementById('lcd-total').innerText = total;
+        }
+
+        function hardwareNextProduct() {
+            currentProductIndex = (currentProductIndex + 1) % productsCatalog.length;
+            currentQuantity = 1;
+            updateDisplayLCD();
+            flashLCDStatus('Item Changed');
+        }
+
+        function hardwareChangeQty() {
+            currentQuantity = (currentQuantity % 10) + 1;
+            updateDisplayLCD();
+            flashLCDStatus('Qty Updated');
+        }
+
+        function hardwareCancel() {
+            currentProductIndex = 0;
+            currentQuantity = 1;
+            updateDisplayLCD();
+            flashLCDStatus('Cleared');
+        }
+
+        function hardwareRecordSale() {
+            const prod = productsCatalog[currentProductIndex];
+            const saleAmount = prod.price * currentQuantity;
+
+            // Update financials
+            weeklyIncome += saleAmount;
+            trustScore = Math.min(850, trustScore + 8);
+            rawDailySales[6] += saleAmount; // Add to today's sales
+
+            // Prepend item to transaction list
+            const txList = document.getElementById('transaction-list');
+            const newTx = document.createElement('div');
+            newTx.className = "flex justify-between items-center p-2.5 bg-purple-50 rounded-xl border border-purple-100 text-xs animate-bounce";
+            newTx.innerHTML = `
+                <div class="flex items-center space-x-2.5">
+                    <div class="w-7 h-7 rounded-lg bg-bloom-purple text-white flex items-center justify-center font-bold">📠</div>
+                    <div>
+                        <div class="font-bold text-slate-800">${prod.name} (x${currentQuantity})</div>
+                        <div class="text-[10px] text-bloom-purple font-semibold">Just Now (BloomBox)</div>
+                    </div>
+                </div>
+                <span class="font-extrabold text-bloom-purple">+R${saleAmount.toFixed(2)}</span>
+            `;
+            txList.insertBefore(newTx, txList.firstChild);
+
+            // Flash screen
+            flashLCDStatus('SALE LOGGED!');
+            
+            // Reset input
+            currentQuantity = 1;
+            updateDisplayLCD();
+
+            // Refresh Analytics Chart & Metrics
+            recalculateMetrics();
+            updateChartData();
+        }
+
+        function flashLCDStatus(text) {
+            const statusEl = document.getElementById('hardware-status');
+            statusEl.innerText = text;
+            statusEl.className = "text-amber-400 font-bold";
+            setTimeout(() => {
+                statusEl.innerText = "Ready";
+                statusEl.className = "text-emerald-400 font-medium";
+            }, 1200);
+        }
+
+        // 2. SUBSCRIPTION TIER SELECTOR
+        function selectTier(tier) {
+            selectedTier = tier;
+
+            const cards = ['standard', 'growth', 'pro'];
+            cards.forEach(t => {
+                const card = document.getElementById(`card-tier-${t}`);
+                const icon = card.querySelector('.tier-icon');
+
+                if (t === tier) {
+                    card.className = "cursor-pointer border-2 border-bloom-purple rounded-xl p-4 transition-all bg-purple-50/50 shadow-sm flex flex-col justify-between relative";
+                    if(icon) {
+                        icon.className = "fa-solid fa-circle-check text-bloom-purple text-sm tier-icon";
+                    }
+                } else {
+                    card.className = "cursor-pointer border-2 border-slate-200 rounded-xl p-4 transition-all hover:border-bloom-purple bg-white flex flex-col justify-between";
+                    if(icon) {
+                        icon.className = "fa-solid fa-circle-check text-slate-300 text-sm tier-icon";
+                    }
+                }
+            });
+
+            recalculateMetrics();
+        }
+
+        // 3. RECALCULATE METRICS & AI INSIGHTS
+        function recalculateMetrics() {
+            // Update weekly income
+            document.getElementById('metric-weekly-income').innerText = weeklyIncome.toLocaleString('en-ZA', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('metric-trust-score').innerText = trustScore;
+
+            // Determine Tier Badge
+            const tierBadge = document.getElementById('metric-credit-tier');
+            let tierName = "Bronze";
+            if (trustScore >= 750) {
+                tierName = "Gold";
+                tierBadge.className = "text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800";
+            } else if (trustScore >= 650) {
+                tierName = "Silver";
+                tierBadge.className = "text-xs font-bold px-2 py-0.5 rounded-md bg-blue-100 text-blue-700";
+            } else {
+                tierBadge.className = "text-xs font-bold px-2 py-0.5 rounded-md bg-amber-100 text-amber-800";
+            }
+            tierBadge.innerText = tierName;
+
+            // Voucher Limit & Insights based on Subscription Plan
+            const voucherEl = document.getElementById('metric-voucher-limit');
+            const voucherStatus = document.getElementById('metric-voucher-status');
+            const insightText = document.getElementById('insight-text');
+
+            if (selectedTier === 'standard') {
+                voucherEl.innerText = "0 (Locked)";
+                voucherStatus.innerText = "Upgrade to Growth Plan for Vouchers";
+                voucherStatus.className = "text-[11px] text-slate-400 font-medium block mt-1";
+                insightText.innerText = "💡 Standard Plan active. Upgrade to R50/mo Growth Plan to calculate alternative credit scores and unlock wholesale stock financing.";
+            } else if (selectedTier === 'growth') {
+                const limit = tierName === "Gold" ? 2500 : (tierName === "Silver" ? 1500 : 500);
+                voucherEl.innerText = limit.toLocaleString();
+                voucherStatus.innerText = "Illustrative limit · Not redeemable";
+                voucherStatus.className = "text-[11px] text-emerald-700 font-medium block mt-1";
+                insightText.innerText = "🔥 Strong sales week! In a future version, stock up using a " + tierName + " Stock Voucher to support business growth.";
+            } else if (selectedTier === 'pro') {
+                const limit = tierName === "Gold" ? 4000 : (tierName === "Silver" ? 2500 : 1000);
+                voucherEl.innerText = limit.toLocaleString();
+                voucherStatus.innerText = "Illustrative voucher · Not active";
+                voucherStatus.className = "text-[11px] text-bloom-purple font-semibold block mt-1";
+                insightText.innerText = "✨ Pro Tier AI Insight: Illustrative Stokvel group rating added +50 points to your score. Recommended bulk wholesale purchase: Maize Meal & Cooking Oil.";
+            }
+        }
+
+        // 4. CHART.JS INITIALIZATION
+        function initChart() {
+            const ctx = document.getElementById('weeklyChart').getContext('2d');
+            weeklyChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Today'],
+                    datasets: [{
+                        label: 'Daily Sales (Rands)',
+                        data: rawDailySales,
+                        borderColor: '#6d28d9',
+                        backgroundColor: 'rgba(109, 40, 217, 0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        borderWidth: 3,
+                        pointBackgroundColor: '#ec4899',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateChartData() {
+            if (weeklyChart) {
+                weeklyChart.data.datasets[0].data = rawDailySales;
+                weeklyChart.update();
+            }
+        }
+    </script>
+</body>
+</html>
